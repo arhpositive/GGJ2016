@@ -12,23 +12,23 @@ namespace Assets.Scripts
 {
     public class MusicManager : MonoBehaviour
     {
-        public AudioClip[] MusicList;
+        public AudioClip GameMusic;
         AudioSource _currentAudioSource;
+        static bool AudioBegin = false;
 
         void Awake()
         {
-            if (MusicList.Length == 0)
+            if (!AudioBegin)
             {
-                return;
+                _currentAudioSource = gameObject.GetComponent<AudioSource>();
+                _currentAudioSource.Play();
+                DontDestroyOnLoad(gameObject);
+                AudioBegin = true;
             }
-
-            int randomIndex = Random.Range(0, MusicList.Length);
-
-            _currentAudioSource = gameObject.GetComponent<AudioSource>();
-
-            _currentAudioSource.clip = MusicList[randomIndex];
-            _currentAudioSource.loop = true;
-            _currentAudioSource.Play();
+            else
+            {
+                Destroy(gameObject);
+            }
         }
     }
 }
